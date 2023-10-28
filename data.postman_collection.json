@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "43604c74-5764-4103-8448-1c0a13113ac6",
+		"name": "data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1453931",
+		"_collection_link": "https://red-firefly-245852.postman.co/workspace/764768a4-f036-49a3-8bc3-ba4af7f066c8/collection/1453931-43604c74-5764-4103-8448-1c0a13113ac6?action=share&source=collection_link&creator=1453931"
+	},
+	"item": [
+		{
+			"name": "Get all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1s\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test(\"Test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var id = jsonData[0].id;",
+							"    pm.collectionVariables.set(\"MY_ID\", id);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users/",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id -> success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1s\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test(\"Test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql('Leanne Graham');",
+							"});",
+							"",
+							"pm.test(\"Response body has the correct schema\", function () {",
+							"    var response = pm.response.json();",
+							"    var schema = {",
+							"        type: \"object\",",
+							"        properties: {",
+							"            id: { type: \"number\" },",
+							"            name: { type: \"string\" },",
+							"            username: { type: \"string\" },",
+							"            email: { type: \"string\", format: \"email\" },",
+							"            address: {",
+							"                type: \"object\",",
+							"                properties: {",
+							"                    street: { type: \"string\" },",
+							"                    suite: { type: \"string\" },",
+							"                    city: { type: \"string\" },",
+							"                    zipcode: { type: \"string\" },",
+							"                    geo: {",
+							"                        type: \"object\",",
+							"                        properties: {",
+							"                            lat: { type: \"string\" },",
+							"                            lng: { type: \"string\" }",
+							"                        },",
+							"                        required: [\"lat\", \"lng\"]",
+							"                    }",
+							"                },",
+							"                required: [\"street\", \"suite\", \"city\", \"zipcode\", \"geo\"]",
+							"            },",
+							"            phone: { type: \"string\" },",
+							"            website: { type: \"string\", format: \"uri\" },",
+							"            company: {",
+							"                type: \"object\",",
+							"                properties: {",
+							"                    name: { type: \"string\" },",
+							"                    catchPhrase: { type: \"string\" },",
+							"                    bs: { type: \"string\" }",
+							"                },",
+							"                required: [\"name\", \"catchPhrase\", \"bs\"]",
+							"            }",
+							"        },",
+							"        required: [\"id\", \"name\", \"username\", \"email\", \"address\", \"phone\", \"website\", \"company\"]",
+							"    };",
+							"",
+							"    pm.expect(tv4.validate(response, schema)).to.be.true;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{MY_ID}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users/{{MY_ID}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{MY_ID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "MY_ID",
+			"value": ""
+		}
+	]
+}
