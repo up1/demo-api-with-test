@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/table.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./db/data.sql:/docker-entrypoint-initdb.d/2.sql
