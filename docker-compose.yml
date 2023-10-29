@@ -2,6 +2,8 @@ version: "3.7"
 services:
   api:
     build: ./api
+    ports:
+      - 3000:3000
     environment:
       DB_HOST: xyz
       DB_PORT: 3306
