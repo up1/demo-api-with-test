@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  api:
+    build: ./api
+    environment:
+      DB_HOST: xyz
+      DB_PORT: 3306
+      DB_NAME: test
+      DB_USER: test
+      DB_PASSWORD: test
+    depends_on:
+      xyz:
+        condition: service_healthy
+
+  api_test:
+    image: postman/newman:alpine
+    volumes:
+      - ./api_testing/stock_testing.postman_collection.json:/etc/newman/stock.json
+    command:
+      run stock.json -k
+      -r cli,json
+      --reporter-json-export="reports/stockReport.json"
+
+  xyz:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/table.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./db/data.sql:/docker-entrypoint-initdb.d/2.sql
+    healthcheck:
+      test: ["CMD", "mysql", "-hlocalhost", "-utest", "-ptest", "-e", "USE test;"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s

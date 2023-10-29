@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  api:
+    image: somkiat/api:1.0.0
+    environment:
+      DB_HOST: xyz
+      DB_PORT: 3306
+      DB_NAME: test
+      DB_USER: test
+      DB_PASSWORD: test
+    depends_on:
+      xyz:
+        condition: service_healthy
+
+  xyz:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/table.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./db/data.sql:/docker-entrypoint-initdb.d/2.sql
+    healthcheck:
+      test: ["CMD", "mysql", "-hlocalhost", "-utest", "-ptest", "-e", "USE test;"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
