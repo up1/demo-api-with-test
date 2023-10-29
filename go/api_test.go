@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 type MockDB struct {
@@ -24,9 +25,14 @@ func TestPingApi(t *testing.T) {
 	c.Request = httptest.NewRequest("GET", "/ping", nil)
 	r.GET("/ping", demo.PingHandler(env))
 	r.ServeHTTP(res, c.Request)
-	if res.Body.String() != "{\"message\":\"Hello World from mock\"}" {
-		t.Errorf("Test failed %v", res.Body.String())
-	}
+
+	e := "{\"message\":\"Hello World from mock\"}"
+	a := res.Body.String()
+	assert.Equal(t, e, a)
+
+	// if res.Body.String() != "{\"message\":\"Hello World from mock\"}" {
+	// 	t.Errorf("Test failed %v", res.Body.String())
+	// }
 }
 
 func BenchmarkXXX(b *testing.B) {
