@@ -8,8 +8,10 @@ import (
 )
 
 func main() {
-	myDb := db.DB{}
+	env := demo.Env{
+		Db: &db.DB{},
+	}
 	r := gin.New()
-	r.GET("/ping", demo.PingHandler(&myDb))
+	r.GET("/ping", demo.PingHandler(env))
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

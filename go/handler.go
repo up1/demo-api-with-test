@@ -7,10 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func PingHandler(db db.DBInterface) gin.HandlerFunc {
+type Env struct {
+	Db db.DBInterface
+}
+
+func PingHandler(e Env) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": db.Connect(),
+			"message": e.Db.Connect(),
 		})
 	}
 }
