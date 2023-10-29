@@ -1,11 +1,29 @@
-package main
+package demo_test
 
-import "testing"
+import (
+	"demo"
+	"net/http/httptest"
+	"testing"
 
-func TestHelloWorld(t *testing.T) {
-	// if HelloWorld() != "Hello World!" {
-	// 	t.Error("Test failed")
-	// }
+	"github.com/gin-gonic/gin"
+)
+
+type MockDB struct {
+}
+
+func (d *MockDB) Connect() string {
+	return "Hello World from mock"
+}
+func TestPingApi(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	res := httptest.NewRecorder()
+	c, r := gin.CreateTestContext(res)
+	c.Request = httptest.NewRequest("GET", "/ping", nil)
+	r.GET("/ping", demo.PingHandler(&MockDB{}))
+	r.ServeHTTP(res, c.Request)
+	if res.Body.String() != "{\"message\":\"Hello World from mock\"}" {
+		t.Errorf("Test failed %v", res.Body.String())
+	}
 }
 
 func BenchmarkXXX(b *testing.B) {
