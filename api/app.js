@@ -1,6 +1,6 @@
 const express = require('express')
 
-function createServer (database) {
+function createServer (database) { // Depedency Injection
   const app = express()
 
   app.use(express.json())

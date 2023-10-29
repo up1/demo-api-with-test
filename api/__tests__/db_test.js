@@ -22,3 +22,9 @@ test('GET /products', async () => {
     ])
     expect(getProductPrices).toHaveBeenCalledTimes(1)
 })
+
+test('GET /', async () => {
+    const response = await supertest(app).get('/')
+    expect(response.statusCode).toBe(200)
+    expect(response.text).toEqual('Hello World 3')
+})
